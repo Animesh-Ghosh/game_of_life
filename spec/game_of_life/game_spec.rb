@@ -1,7 +1,9 @@
-require_relative '../lib/game_of_life'
+require_relative '../../lib/game_of_life/game'
+require_relative '../../lib/game_of_life/outputter/console'
 
-RSpec.describe GameOfLife do
-  let(:game) { described_class.new(5, 5) }
+RSpec.describe GameOfLife::Game do
+  let(:outputter) { GameOfLife::Outputter::Console.new }
+  let(:game) { described_class.new(5, 5, outputter) }
 
   before do 
     game.set_cell(1, 2, 1)
