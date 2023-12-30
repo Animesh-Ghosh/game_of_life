@@ -1,38 +1,44 @@
 require_relative '../game_of_life/game'
 require_relative '../game_of_life/outputter/console'
+require_relative '../game_of_life/outputter/gui'
 
 module GameOfLife
   class RakeTask
-    def initialize
+    def initialize(width: 80, height: 20, mode: :console)
+      @width = width
+      @height = height
+      @mode = mode
       run_task
     end
 
     private
 
     def run_task
-      game = Game.new(20, 80, Outputter::Console.new)
-      cell_values = [0, 1]
+      game = Game.new(@height, @width)
+      cell_values = Game::CELLS.values
 
       # Set initial state
-      20.times do |i|
-        80.times do |j|
+      @height.times do |i|
+        @width.times do |j|
           game.set_cell(i, j, cell_values.sample)
         end
       end
-      
-      # Display initial state
-      game.output_board
-      sleep 0.5
-      system 'clear'
 
-      while true
-        # Produce the next tick
-        game.tick
+      outputter.new(game).render
+    end
 
-        # Display the updated state
-        game.output_board
-        sleep 0.5
-        system 'clear'
+    def outputter
+      if defined?(@outputter)
+        @outputter
+      else
+        @outputter = case @mode
+                     when :gui
+                       Outputter::GUI
+                     when :console
+                       Outputter::Console
+                     else
+                       Outputter::Console
+                     end
       end
     end
   end
