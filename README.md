@@ -2,6 +2,8 @@
 
 Conway's Game of Life, in Ruby.
 
+![Game of Life GIF](assets/game_of_life.gif)
+
 ## Installation
 
 ```bash
